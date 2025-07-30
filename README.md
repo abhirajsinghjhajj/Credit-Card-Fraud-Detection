@@ -117,13 +117,10 @@ M5 Sampling1
 
 ---
 
-## Author & License
+## Author
 
 **Author:**  
-- Your Name (add your details here)
-
-**License:**  
-- [MIT License](./LICENSE)
+- Abhiraj Singh Jhajj
 
 ---
 
