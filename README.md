@@ -55,3 +55,79 @@ Imbalanced datasets, such as those in fraud detection, hinder conventional machi
 ## Quick Start
 
 1. **Clone this repository:**
+- git clone https://github.com/abhirajsinghjhajj/Credit-Card-Fraud-Detection
+
+2. **Install dependencies:**
+- pip install -r requirements.txt
+
+3. **Add your dataset:**
+- Place `Creditcard_data.csv` in a `data/` directory.
+
+4. **Run the pipeline:**
+- python src/main.py
+
+
+---
+
+## How It Works
+
+1. **Load Data & Initial Balancing:**  
+- Reads credit card data.
+- Balances the set by oversampling (SMOTE) to achieve a 10% minority ratio, then undersamples the majority class for parity.
+
+2. **Sample Size Calculation:**  
+- Five sample sizes are computed using statistical formulas for finite populations at various error margins (from 5% to 1%).
+
+3. **Repeat Experiments:**  
+- For each sample size subset:
+  - Split into train/test (70/30, stratified)
+  - Resample training data using each of the five strategies
+  - Train five different models
+  - Evaluate and record test accuracy
+
+4. **Result Aggregation & Matrix Output:**  
+- Average results across all samples.
+- Print a matrix showing models (rows) vs. samplers (columns).
+- Print the best sampler per model.
+
+---
+
+## Results Example
+
+Balanced dataset size: 152
+Adjusted sample sizes: [109, 121, 133, 143, 149]
+
+Accuracy matrix (rows = models, columns = samplers):
+    Sampling1  Sampling2  Sampling3  Sampling4  Sampling5
+M1      0.878      0.883      0.878      0.768      0.884
+M2      0.887      0.887      0.877      0.708      0.888
+M3      0.967      0.951      0.951      0.829      0.956
+M4      0.905      0.905      0.905      0.720      0.908
+M5      0.674      0.668      0.668      0.606      0.663
+
+Best sampler per model:
+M1 Sampling5
+M2 Sampling5
+M3 Sampling1
+M4 Sampling5
+M5 Sampling1
+
+
+*Here, "Sampling4" refers to SMOTEENN—typically the most effective under these conditions.*
+
+---
+
+## Author & License
+
+**Author:**  
+- Your Name (add your details here)
+
+**License:**  
+- [MIT License](./LICENSE)
+
+---
+
+**Note:**  
+For further analysis, consider extending the script to include other metrics such as Recall, Precision, F1-score, and AUC—crucial for real-world fraud detection beyond simple accuracy.
+
+---
