@@ -1,130 +1,97 @@
-# Credit Card Fraud Detection: Resampling & Model Evaluation
+# Credit Card Fraud Detection
 
-This repository provides a comprehensive Python pipeline for exploring how various data resampling techniques impact the performance of multiple classification models in the context of credit card fraud detection. The workflow is reusable for any highly imbalanced classification data and facilitates a data-driven approach to handling class imbalance.
+This project implements a machine learning pipeline for detecting credit card fraud using various resampling techniques and classifiers.
 
----
+## ✅ Project Overview
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Requirements](#requirements)
-- [Quick Start](#quick-start)
-- [How It Works](#how-it-works)
-- [Results Example](#results-example)
-- [Author & License](#author--license)
+The goal is to handle extreme class imbalance in the credit card fraud dataset and evaluate different sampling strategies combined with machine learning models to detect fraudulent transactions effectively.
 
 ---
 
-## Overview
+## 🗂 Dataset
 
-Imbalanced datasets, such as those in fraud detection, hinder conventional machine learning models due to the rarity of the minority class. This project evaluates different resampling (balancing) methods and classification models, ultimately generating a matrix that reveals which techniques yield the best detection accuracy.
+The dataset used is the **[Credit Card Fraud Detection dataset](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)** from Kaggle.  
+📊 It contains transactions made by credit cards in September 2013 by European cardholders.
 
-**Process Summary:**
-- Balances the data using SMOTE and Random Undersampling.
-- Generates five sample datasets of various statistically-defined sizes.
-- Applies five different balancing (sampling) strategies to each train set.
-- Trains and tests five machine learning models per sampler.
-- Aggregates results for analysis and comparison.
+- **Rows**: 284,807 transactions  
+- **Columns**: 31 (including anonymized PCA features `V1` to `V28`, `Time`, `Amount`, and target `Class`)  
+- **Imbalance**: Only 0.172% of transactions are fraudulent.
 
----
+⚠️ Due to its large size, the dataset is **not included** in this repository.  
+👉 Download it from Kaggle:  
+[https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
 
-## Features
-
-- **Resampling Methods:** Random Under/Over Sampling, SMOTE, SMOTEENN, SMOTETomek
-- **Classifiers:** Logistic Regression, Decision Tree, Random Forest, Gradient Boosting, k-Nearest Neighbors
-- **Statistical Sampling:** Calculates sample sizes using finite population correction and multiple confidence intervals
-- **Result Aggregation:** Averages test accuracies across independent samples for robust comparison
-- **Output:** Accuracy matrix, best sampler per model (printed in console)
+Place the file `creditcard.csv` in the project root before running the code.
 
 ---
 
-## Requirements
+## ⚙️ How It Works
 
-- Python 3.8+
-- Packages:  
-  - pandas  
-  - numpy  
-  - scikit-learn  
-  - imbalanced-learn
+1. The dataset is loaded and resampled to balance the classes using:
+    - SMOTE (Synthetic Minority Over-sampling Technique)  
+    - Random Under-Sampler  
 
-*See `requirements.txt` for easy installation.*
+2. Multiple dataset sample sizes are calculated based on statistical sample size formula.
 
----
+3. Various samplers are applied:
+    - RandomUnderSampler  
+    - RandomOverSampler  
+    - SMOTE  
+    - SMOTEENN  
+    - SMOTETomek  
 
-## Quick Start
+4. Multiple machine learning models are trained and evaluated:
+    - Logistic Regression  
+    - Decision Tree  
+    - Random Forest  
+    - Gradient Boosting  
+    - K-Nearest Neighbors  
 
-1. **Clone this repository:**
-- git clone https://github.com/abhirajsinghjhajj/Credit-Card-Fraud-Detection
+5. StandardScaler is applied to normalize features.
 
-2. **Install dependencies:**
-- pip install -r requirements.txt
-
-3. **Add your dataset:**
-- Place `Creditcard_data.csv` in a `data/` directory.
-
-4. **Run the pipeline:**
-- python src/main.py
-
+6. Model performance is evaluated using **accuracy averaged over five different dataset samples**.
 
 ---
 
-## How It Works
+## 🚀 Getting Started
 
-1. **Load Data & Initial Balancing:**  
-- Reads credit card data.
-- Balances the set by oversampling (SMOTE) to achieve a 10% minority ratio, then undersamples the majority class for parity.
+1. Clone the repository:
+    ```bash
+    git clone <your-repo-url>
+    cd <repo-folder>
+    ```
 
-2. **Sample Size Calculation:**  
-- Five sample sizes are computed using statistical formulas for finite populations at various error margins (from 5% to 1%).
+2. Download the dataset from Kaggle:  
+    [https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
 
-3. **Repeat Experiments:**  
-- For each sample size subset:
-  - Split into train/test (70/30, stratified)
-  - Resample training data using each of the five strategies
-  - Train five different models
-  - Evaluate and record test accuracy
+3. Place `creditcard.csv` in the project root.
 
-4. **Result Aggregation & Matrix Output:**  
-- Average results across all samples.
-- Print a matrix showing models (rows) vs. samplers (columns).
-- Print the best sampler per model.
+4. Install dependencies:
+    ```bash
+    pip install pandas numpy scikit-learn imbalanced-learn
+    ```
 
----
-
-## Results Example
-
-Balanced dataset size: 152
-Adjusted sample sizes: [109, 121, 133, 143, 149]
-
-Accuracy matrix (rows = models, columns = samplers):
-    Sampling1  Sampling2  Sampling3  Sampling4  Sampling5
-M1      0.878      0.883      0.878      0.768      0.884
-M2      0.887      0.887      0.877      0.708      0.888
-M3      0.967      0.951      0.951      0.829      0.956
-M4      0.905      0.905      0.905      0.720      0.908
-M5      0.674      0.668      0.668      0.606      0.663
-
-Best sampler per model:
-M1 Sampling5
-M2 Sampling5
-M3 Sampling1
-M4 Sampling5
-M5 Sampling1
-
-
-*Here, "Sampling4" refers to SMOTEENN—typically the most effective under these conditions.*
+5. Run the code:
+    ```bash
+    python your_script.py
+    ```
 
 ---
 
-## Author
+## ✅ Output
 
-**Author:**  
-- Abhiraj Singh Jhajj
-
----
-
-**Note:**  
-For further analysis, consider extending the script to include other metrics such as Recall, Precision, F1-score, and AUC—crucial for real-world fraud detection beyond simple accuracy.
+- The final result is an accuracy matrix showing performance of all model + sampler combinations.
+- It prints the best sampler for each model.
 
 ---
+
+## 📚 Notes
+
+- Accuracy may not be the best evaluation metric for highly imbalanced data.  
+- Consider using **F1-score, Precision, Recall, or ROC-AUC** for better evaluation.
+  
+---
+
+## 📜 License
+
+This project is open-source under the MIT License.
