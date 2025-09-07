@@ -11,9 +11,11 @@ from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from collections import defaultdict
 from sklearn.preprocessing import StandardScaler
+import warnings
+warnings.filterwarnings('ignore')
 
 
-df = pd.read_csv("Creditcard_data.csv")
+df = pd.read_csv("creditcard.csv")
 X, y = df.drop('Class', axis=1), df['Class']
 smote = SMOTE(sampling_strategy=0.1, random_state=42)
 rus = RandomUnderSampler(sampling_strategy=1.0, random_state=42)
@@ -85,4 +87,3 @@ print("\nAccuracy matrix (rows = models, columns = samplers):\n")
 print(final_table)
 print("\nBest sampler per model:\n")
 print(final_table.idxmax(axis=1))
-
