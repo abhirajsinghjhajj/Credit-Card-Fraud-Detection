@@ -28,8 +28,8 @@ def sample_size(N, Z, p, e):
     return int(n_inf / (1 + (n_inf-1)/N))
 
 N = len(balanced)
-Z = 1.96
-p = 0.5
+Z = 1.96   # 95% confidence
+p = 0.5    # Assumed proportion for max variance
 margins = [0.05, 0.04, 0.03, 0.02, 0.01]
 sizes = [sample_size(N, Z, p, e) for e in margins]
 sizes = [min(s, N) for s in sizes]
@@ -49,7 +49,6 @@ samplers = {
     'Sampling4': SMOTEENN(random_state=0),
     'Sampling5': SMOTETomek(random_state=0)
 }
-
 models = {
     'M1': LogisticRegression(max_iter=500, solver='liblinear'),
     'M2': DecisionTreeClassifier(random_state=0),
@@ -60,7 +59,6 @@ models = {
 
 
 results = defaultdict(lambda: defaultdict(float))
-
 for sample in samples:
     X_s, y_s = sample.drop('Class', axis=1), sample['Class']
     X_train, X_test, y_train, y_test = train_test_split(
@@ -82,10 +80,8 @@ for sample in samples:
 for m_name in results:
     for s_name in results[m_name]:
         results[m_name][s_name] = round(results[m_name][s_name] / 5, 3)
-
 final_table = pd.DataFrame(results).T
 print("\nAccuracy matrix (rows = models, columns = samplers):\n")
 print(final_table)
-
 print("\nBest sampler per model:\n")
 print(final_table.idxmax(axis=1))
