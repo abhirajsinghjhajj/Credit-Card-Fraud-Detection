@@ -28,8 +28,8 @@ def sample_size(N, Z, p, e):
     return int(n_inf / (1 + (n_inf-1)/N))
 
 N = len(balanced)
-Z = 1.96   # 95% confidence
-p = 0.5    # Assumed proportion for max variance
+Z = 1.96
+p = 0.5
 margins = [0.05, 0.04, 0.03, 0.02, 0.01]
 sizes = [sample_size(N, Z, p, e) for e in margins]
 sizes = [min(s, N) for s in sizes]
@@ -85,3 +85,4 @@ print("\nAccuracy matrix (rows = models, columns = samplers):\n")
 print(final_table)
 print("\nBest sampler per model:\n")
 print(final_table.idxmax(axis=1))
+
